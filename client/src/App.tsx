@@ -1,12 +1,14 @@
 import React from 'react';
+import './Style.css';
+import { Message } from './Components/Message';
+import { Dashboard } from './Components/Dashboard';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>
-          Annual Leave
-        </h1>
+        <Dashboard />
+        <Message />
       </header>
     </div>
   );
