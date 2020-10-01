@@ -4,7 +4,7 @@ html, body {
     font-family: sans-serif;
 }
 
-.message-box {
+.message-box, .feature-box {
     border-style: solid;
     border-color: lightgrey;
     border-width: thin;
@@ -14,7 +14,19 @@ html, body {
     margin: 10px;
 }
 
+.feature-box {
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+}
+
 .message-text {
     padding-left: 20px;
     color: gray;
+}
+
+.feature-title {
+    color: #396DBC;
+    padding-left: 20px;
+    font-size: x-large;
 }

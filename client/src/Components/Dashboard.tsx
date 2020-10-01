@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { Message } from './Message';
 
 interface Props {
 
@@ -6,8 +7,11 @@ interface Props {
 
 export const Dashboard: React.FC<Props> = () => {
     return (
-        <h1>
-          Annual Leave
-        </h1>
+        <div className="feature-box">
+            <p className="feature-title">
+                Annual Leave
+            </p>
+            <Message />
+        </div>
     );
 };

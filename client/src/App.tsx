@@ -1,6 +1,5 @@
 import React from 'react';
 import './Style.css';
-import { Message } from './Components/Message';
 import { Dashboard } from './Components/Dashboard';
 
 function App() {
@@ -8,7 +7,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Dashboard />
-        <Message />
       </header>
     </div>
   );
