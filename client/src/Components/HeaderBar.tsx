@@ -10,7 +10,7 @@ export const HeaderBar: React.FC<Props> = ({taken}: Props) => {
         <div className="header-box row text-center shadow-sm">
             <div className="col-sm header-title">
                 <div>Annual leave</div>
-                <div><span style={{color:"#00c800b3"}}> + </span>28 days</div>
+                <div><span style={{color:"limegreen"}}> + </span>28 days</div>
             </div>
             <div className="col-sm header-title">
                 <div>Taken this month</div>
@@ -18,7 +18,7 @@ export const HeaderBar: React.FC<Props> = ({taken}: Props) => {
             </div>
             <div className="col-sm header-title">
                 <div><b>Remaining this year</b></div>
-                <div><span style={{color:"#00c800b3"}}> + </span><b>{28-taken} days</b></div>
+                <div><span style={{color:"limegreen"}}> + </span><b>{28-taken} days</b></div>
             </div>
         </div>
     );
