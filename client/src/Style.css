@@ -11,7 +11,16 @@ html, body {
     background-color: white;
     border-radius: 5px;
     width: auto;
-    margin: 10px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.message-text {
+    padding-left: 20px;
+    padding-top: 15px;
+    color: gray;
 }
 
 .feature-box {
@@ -20,13 +29,16 @@ html, body {
     margin-top: 5%;
 }
 
-.message-text {
-    padding-left: 20px;
-    color: gray;
-}
-
 .feature-title {
     color: #396DBC;
-    padding-left: 20px;
+    padding-left: 30px;
+    padding-top: 30px;
     font-size: x-large;
+}
+
+.feature-button {
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
