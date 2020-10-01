@@ -16,7 +16,7 @@ export const Dashboard: React.FC<Props> = () => {
             <div className="d-flex">
                 <Button variant="primary" className="ml-auto feature-button"><span className="pr-2">+</span> Add annual leave</Button>
             </div>
-            <Message />
+            <Message format="info" content="This is an informational message" />
         </div>
     );
 };
