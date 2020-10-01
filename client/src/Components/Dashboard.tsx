@@ -1,5 +1,6 @@
 import React from 'react';
 import { Message } from './Message';
+import { HeaderBar } from './HeaderBar';
 import Button from 'react-bootstrap/Button';
 
 interface Props {
@@ -13,9 +14,11 @@ export const Dashboard: React.FC<Props> = () => {
             <p className="feature-title">
                 October 2020 - Annual Leave
             </p>
+            <HeaderBar taken={0} />
             <div className="d-flex">
                 <Button variant="primary" className="ml-auto feature-button"><span className="pr-2">+</span> Add annual leave</Button>
             </div>
+            <Message format="info" content="Your annual leave runs from 01/01/2020 to 31/12/2020." />
             <Message format="warning" content="This is an informational message" />
         </div>
     );
