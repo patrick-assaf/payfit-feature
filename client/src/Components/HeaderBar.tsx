@@ -7,7 +7,7 @@ interface Props {
 
 export const HeaderBar: React.FC<Props> = ({taken}: Props) => {
     return (
-        <div className="header-box row text-center">
+        <div className="header-box row text-center shadow-sm">
             <div className="col-sm header-title">
                 <div>Annual leave</div>
                 <div><span style={{color:"#00c800b3"}}> + </span>28 days</div>
