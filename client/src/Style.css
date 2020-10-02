@@ -44,9 +44,40 @@ html, body {
     padding-bottom: 10px;
 }
 
-.header-title {
+.table-box {
+    border-style: solid;
+    border-color: lightgrey;
+    border-width: thin;
+    background-color: white;
+    border-radius: 5px;
+    width: auto;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 20px;
+    margin-top: 30px; 
+    padding-top: 15px;
+}
+
+.table-row {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+hr {
+    border-top: 1px solid lightgray;
+    width: 100%;
+}
+
+.header-title, .table-empty {
     color: gray;
     font-size: large;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.table-empty {
+    padding-top: 40px;
+    padding-bottom: 40px;
 }
 
 .message-text {
