@@ -29,10 +29,15 @@ export const Dashboard: React.FC<Props> = () => {
     const today = getTodaysDate();
 
     const [show, setShow] = useState(false);
-    const [formInput, updateFormInput] = useState({ type: 'Paid vacation', start: today, end: '', halfFirst: false, halfLast: false });
+    const [formInput, updateFormInput] = useState({ type: 'Paid Vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
     const [errorState, handleError] = useState({ error: false, message: '' });
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        updateFormInput({ type: 'Paid vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
+        handleError({ error: false, message: '' });
+        setShow(false);
+    }
+
     const handleShow = () => setShow(true);
 
     const changeType = (event: any) => {
@@ -54,11 +59,13 @@ export const Dashboard: React.FC<Props> = () => {
 
         if(endDate && ((endYear <= startYear && endMonth < startMonth) || (endMonth <= startMonth && endDay <= startDay))) {
             event.target.value = '';
+            updateFormInput({ type: formInput.type, start: '', end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: formInput.daysTaken });
             handleError({ error: true, message: 'You must choose an end date that is later than the start date.' });
         }
         else {
             handleError({ error: false, message: '' });
-            updateFormInput({ type: formInput.type, start: startDate, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast })
+            let days = parseInt(endDay) - parseInt(startDay);
+            updateFormInput({ type: formInput.type, start: startDate, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
         }
     }
 
@@ -81,7 +88,8 @@ export const Dashboard: React.FC<Props> = () => {
         }
         else {
             handleError({ error: false, message: '' });
-            updateFormInput({ type: formInput.type, start: formInput.start, end: endDate, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast });
+            let days = parseInt(endDay) - parseInt(startDay);
+            updateFormInput({ type: formInput.type, start: formInput.start, end: endDate, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
         }
     }
 
@@ -140,15 +148,15 @@ export const Dashboard: React.FC<Props> = () => {
                         size="sm"
                         onChange={changeType}
                     >
-                        <option value="Paid vacation">Paid vacation</option>
-                        <option value="Unpaid vacation">Unpaid vacation</option>
+                        <option value="Paid Vacation">Paid Vacation</option>
+                        <option value="Unpaid Vacation">Unpaid Vacation</option>
                         <option value="Paternity / Maternity / Adoption">Paternity / Maternity / Adoption</option>
-                        <option value="Sick child">Sick child</option>
-                        <option value="Family reasons">Family reasons</option>
+                        <option value="Sick Child">Sick Child</option>
+                        <option value="Family Reasons">Family Reasons</option>
                         <option value="RTT">RTT</option>
-                        <option value="Remote work">Remote work</option>
-                        <option value="Sick leave">Sick leave</option>
-                        <option value="Occupational disease">Occupational disease</option>
+                        <option value="Remote Work">Remote Work</option>
+                        <option value="Sick Leave">Sick Leave</option>
+                        <option value="Occupational Disease">Occupational Disease</option>
                     </Form.Control>
                     <Form.Text muted>
                         <FontAwesomeIcon icon={faInfoCircle} style={{color: "gray"}} className="d-inline mr-1"/> Choose the type of leave that you wish to add.
@@ -221,7 +229,7 @@ export const Dashboard: React.FC<Props> = () => {
 
             {
                 !errorState.error && formInput.start && formInput.end &&
-                <Message format="info" content={"You are adding a leave for " + formInput.type + " starting on " + formInput.start + " and ending on " + formInput.end + "."} /> 
+                <Message format="info" content={"You are adding a leave for " + formInput.type + " starting on " + formInput.start + " and ending on " + formInput.end + " for a total of " + formInput.daysTaken + " days."} /> 
             }
 
             <Modal.Footer>
