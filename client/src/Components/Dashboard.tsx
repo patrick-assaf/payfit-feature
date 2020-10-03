@@ -41,7 +41,7 @@ export const Dashboard: React.FC<Props> = () => {
             onHide={handleClose}
             backdrop="static"
             keyboard={false}
-            size="lg"
+            size="xl"
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
@@ -49,33 +49,82 @@ export const Dashboard: React.FC<Props> = () => {
                 <Modal.Title>Leaves</Modal.Title>
             </Modal.Header>
 
-            <Modal.Body>
-                <Form className="d-flex justify-content-center" inline>
-                <Form.Group>
-                    <Form.Label htmlFor="startDate" className="label-text pr-4 pb-2">Start of leave*</Form.Label>
+            <Form onSubmit={() => console.log("Form submitted.")}>
+            <Modal.Body className="d-flex justify-content-center">
+                <Form.Group className="pt-4 pr-4 pl-4"> 
+                    <Form.Label className="label-text" htmlFor="leaveType">Leave Type*</Form.Label>
+                    <Form.Control
+                        required 
+                        name="leaveType" 
+                        as="select" 
+                        className="mr-sm-2 mb-1" 
+                        id="leaveType" 
+                        custom 
+                        placeholder="Choose a type of leave..." 
+                    >
+                        <option value="1">Paid vacation</option>
+                        <option value="2">Unpaid vacation</option>
+                        <option value="3">Paternity / Maternity / Adoption</option>
+                        <option value="4">Sick child</option>
+                        <option value="5">Family reasons</option>
+                        <option value="6">RTT</option>
+                        <option value="7">Remote work</option>
+                        <option value="8">Sick leave</option>
+                        <option value="9">Occupational disease</option>
+                    </Form.Control>
+                    <Form.Text className="pb-3" muted>
+                        <FontAwesomeIcon icon={faInfoCircle} style={{color: "gray"}} className="d-inline mr-2"/> Choose the type of leave that you wish to add.
+                    </Form.Text>
+                </Form.Group>
+                <Form.Group className="pt-4 pr-4 pl-4">
+                    <Form.Label htmlFor="startDate" className="label-text">Start of leave*</Form.Label>
                     <InputGroup className="mb-2 mr-sm-2" id="startDate">
                         <InputGroup.Prepend>
                         <InputGroup.Text>
                             <FontAwesomeIcon icon={faCalendarAlt} style={{color: "gray"}} className="d-inline" />
                         </InputGroup.Text>
                         </InputGroup.Prepend>
-                        <FormControl placeholder="Pick a date" />
+                        <FormControl 
+                            required
+                            type="date"
+                            placeholder="Pick a date"
+                            name="startDate"
+                        />
                     </InputGroup>
-                    <Form.Text className="pl-2 pb-3" muted>
-                        <FontAwesomeIcon icon={faInfoCircle} style={{color: "gray"}} className="d-inline mr-1"/> Must be 8-20 characters long.
+                    <Form.Text className="pb-3" muted>
+                        <FontAwesomeIcon icon={faInfoCircle} style={{color: "gray"}} className="d-inline mr-2"/> This is a help message.
                     </Form.Text>
                 </Form.Group>
-                </Form>
+                <Form.Group className="pt-4 pr-4 pl-4">
+                    <Form.Label htmlFor="endDate" className="label-text">End of leave*</Form.Label>
+                    <InputGroup className="mb-2 mr-sm-2" id="endDate">
+                        <InputGroup.Prepend>
+                        <InputGroup.Text>
+                            <FontAwesomeIcon icon={faCalendarAlt} style={{color: "gray"}} className="d-inline" />
+                        </InputGroup.Text>
+                        </InputGroup.Prepend>
+                        <FormControl 
+                            required
+                            type="date"
+                            placeholder="Pick a date"
+                            name="endDate"
+                        />
+                    </InputGroup>
+                    <Form.Text className="pb-3" muted>
+                        <FontAwesomeIcon icon={faInfoCircle} style={{color: "gray"}} className="d-inline mr-2"/> This is a help message.
+                    </Form.Text>
+                </Form.Group>
             </Modal.Body>
 
-            <Message format="info" content="Choose the type of leave that you wish to add." />
+            <Message format="info" content="Only paid vacations will be deducted from your 28 annual leave days." />
             
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button variant="primary">Save leave</Button>
+                <Button variant="primary" type="submit">Save leave</Button>
             </Modal.Footer>
+            </Form>
         </Modal>
         </>
     );
