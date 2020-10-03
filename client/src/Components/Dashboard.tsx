@@ -18,7 +18,7 @@ interface Props {
 export const Dashboard: React.FC<Props> = () => {
 
     const [show, setShow] = useState(false);
-    const [formInput, updateFormInput] = useState({ type: '', start: '', end: '', halfFirst: '', halfLast: '' })
+    const [formInput, updateFormInput] = useState({ type: '1', start: '', end: '', halfFirst: false, halfLast: false })
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
