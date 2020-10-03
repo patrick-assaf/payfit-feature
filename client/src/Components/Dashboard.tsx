@@ -17,8 +17,20 @@ interface Props {
 
 export const Dashboard: React.FC<Props> = () => {
 
+    const getTodaysDate = () => {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+
+        return yyyy + '-' + mm + '-' + dd;
+    }
+
+    const today = getTodaysDate();
+
     const [show, setShow] = useState(false);
-    const [formInput, updateFormInput] = useState({ type: '1', start: '', end: '', halfFirst: false, halfLast: false })
+    const [formInput, updateFormInput] = useState({ type: 'Paid vacation', start: today, end: '', halfFirst: false, halfLast: false });
+    const [errorState, handleError] = useState({ error: false, message: '' });
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -28,11 +40,49 @@ export const Dashboard: React.FC<Props> = () => {
     }
 
     const changeStart = (event: any) => {
-        console.log(event.target.value);
+        let startDate = event.target.value;
+        let startYear = startDate.slice(0, startDate.search("-"));
+        let startDateCut = startDate.slice(startDate.search("-")+1);
+        let startMonth = startDateCut.slice(0, startDateCut.search("-"));
+        let startDay = startDateCut.slice(startDateCut.search("-")+1);
+
+        let endDate = formInput.end;
+        let endYear = endDate.slice(0, endDate.search("-"));
+        let endDateCut = endDate.slice(endDate.search("-")+1);
+        let endMonth = endDateCut.slice(0, endDateCut.search("-"));
+        let endDay = endDateCut.slice(endDateCut.search("-")+1);
+
+        if(endDate && ((endYear <= startYear && endMonth < startMonth) || (endMonth <= startMonth && endDay <= startDay))) {
+            event.target.value = '';
+            handleError({ error: true, message: 'You must choose an end date that is later than the start date.' });
+        }
+        else {
+            handleError({ error: false, message: '' });
+            updateFormInput({ type: formInput.type, start: startDate, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast })
+        }
     }
 
     const changeEnd = (event: any) => {
-        console.log(event.target.value);
+        let endDate = event.target.value;
+        let endYear = endDate.slice(0, endDate.search("-"));
+        let endDateCut = endDate.slice(endDate.search("-")+1);
+        let endMonth = endDateCut.slice(0, endDateCut.search("-"));
+        let endDay = endDateCut.slice(endDateCut.search("-")+1);
+
+        let startDate = formInput.start;
+        let startYear = startDate.slice(0, startDate.search("-"));
+        let startDateCut = startDate.slice(startDate.search("-")+1);
+        let startMonth = startDateCut.slice(0, startDateCut.search("-"));
+        let startDay = startDateCut.slice(startDateCut.search("-")+1);
+
+        if((endYear <= startYear && endMonth < startMonth) || (endMonth <= startMonth && endDay <= startDay)) {
+            event.target.value = '';
+            handleError({ error: true, message: 'You must choose an end date that is later than the start date.' });
+        }
+        else {
+            handleError({ error: false, message: '' });
+            updateFormInput({ type: formInput.type, start: formInput.start, end: endDate, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast });
+        }
     }
 
     const changeFirstHalf = (event: any) => {
@@ -90,18 +140,18 @@ export const Dashboard: React.FC<Props> = () => {
                         size="sm"
                         onChange={changeType}
                     >
-                        <option value="1">Paid vacation</option>
-                        <option value="2">Unpaid vacation</option>
-                        <option value="3">Paternity / Maternity / Adoption</option>
-                        <option value="4">Sick child</option>
-                        <option value="5">Family reasons</option>
-                        <option value="6">RTT</option>
-                        <option value="7">Remote work</option>
-                        <option value="8">Sick leave</option>
-                        <option value="9">Occupational disease</option>
+                        <option value="Paid vacation">Paid vacation</option>
+                        <option value="Unpaid vacation">Unpaid vacation</option>
+                        <option value="Paternity / Maternity / Adoption">Paternity / Maternity / Adoption</option>
+                        <option value="Sick child">Sick child</option>
+                        <option value="Family reasons">Family reasons</option>
+                        <option value="RTT">RTT</option>
+                        <option value="Remote work">Remote work</option>
+                        <option value="Sick leave">Sick leave</option>
+                        <option value="Occupational disease">Occupational disease</option>
                     </Form.Control>
                     <Form.Text muted>
-                        <FontAwesomeIcon icon={faInfoCircle} style={{color: "gray"}} className="d-inline mr-2"/> Choose the type of leave that you wish to add.
+                        <FontAwesomeIcon icon={faInfoCircle} style={{color: "gray"}} className="d-inline mr-1"/> Choose the type of leave that you wish to add.
                     </Form.Text>
                 </Form.Group>
                 <Form.Group className="w-100 modal-row">
@@ -120,6 +170,7 @@ export const Dashboard: React.FC<Props> = () => {
                             name="startDate"
                             size="sm"
                             onChange={changeStart}
+                            defaultValue={today}
                         />
                     </InputGroup>
                 </Form.Group>
@@ -162,7 +213,17 @@ export const Dashboard: React.FC<Props> = () => {
             </Modal.Body>
 
             <Message format="info" content="Only paid vacations will be deducted from your 28 annual leave days." />
-            
+
+            {
+                errorState.error &&
+                <Message format="warning" content={errorState.message} /> 
+            }
+
+            {
+                !errorState.error && formInput.start && formInput.end &&
+                <Message format="info" content={"You are adding a leave for " + formInput.type + " starting on " + formInput.start + " and ending on " + formInput.end + "."} /> 
+            }
+
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                     Cancel
