@@ -18,9 +18,34 @@ interface Props {
 export const Dashboard: React.FC<Props> = () => {
 
     const [show, setShow] = useState(false);
+    const [formInput, updateFormInput] = useState({ type: '', start: '', end: '', halfFirst: '', halfLast: '' })
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const changeType = (event: any) => {
+        console.log(event.target.value);
+    }
+
+    const changeStart = (event: any) => {
+        console.log(event.target.value);
+    }
+
+    const changeEnd = (event: any) => {
+        console.log(event.target.value);
+    }
+
+    const changeFirstHalf = (event: any) => {
+        console.log(event.target.value);
+    }
+
+    const changeLastHalf = (event: any) => {
+        console.log(event.target.value);
+    }
+
+    const formSubmission = () => {
+        console.log("Form Submitted");
+    }
 
     return (
         <>
@@ -41,7 +66,7 @@ export const Dashboard: React.FC<Props> = () => {
             onHide={handleClose}
             backdrop="static"
             keyboard={false}
-            size="xl"
+            size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
@@ -49,9 +74,10 @@ export const Dashboard: React.FC<Props> = () => {
                 <Modal.Title>Leaves</Modal.Title>
             </Modal.Header>
 
-            <Form onSubmit={() => console.log("Form submitted.")}>
-            <Modal.Body className="d-flex justify-content-center">
-                <Form.Group className="pt-4 pr-4 pl-4"> 
+            <Form onSubmit={formSubmission}>
+            <Modal.Body className="pt-4 pb-4">
+                <Form.Row className="d-flex justify-content-center">
+                <Form.Group className="w-100 modal-row"> 
                     <Form.Label className="label-text" htmlFor="leaveType">Leave Type*</Form.Label>
                     <Form.Control
                         required 
@@ -61,6 +87,8 @@ export const Dashboard: React.FC<Props> = () => {
                         id="leaveType" 
                         custom 
                         placeholder="Choose a type of leave..." 
+                        size="sm"
+                        onChange={changeType}
                     >
                         <option value="1">Paid vacation</option>
                         <option value="2">Unpaid vacation</option>
@@ -72,11 +100,11 @@ export const Dashboard: React.FC<Props> = () => {
                         <option value="8">Sick leave</option>
                         <option value="9">Occupational disease</option>
                     </Form.Control>
-                    <Form.Text className="pb-3" muted>
+                    <Form.Text muted>
                         <FontAwesomeIcon icon={faInfoCircle} style={{color: "gray"}} className="d-inline mr-2"/> Choose the type of leave that you wish to add.
                     </Form.Text>
                 </Form.Group>
-                <Form.Group className="pt-4 pr-4 pl-4">
+                <Form.Group className="w-100 modal-row">
                     <Form.Label htmlFor="startDate" className="label-text">Start of leave*</Form.Label>
                     <InputGroup className="mb-2 mr-sm-2" id="startDate">
                         <InputGroup.Prepend>
@@ -88,14 +116,14 @@ export const Dashboard: React.FC<Props> = () => {
                             required
                             type="date"
                             placeholder="Pick a date"
+                            id="startDate"
                             name="startDate"
+                            size="sm"
+                            onChange={changeStart}
                         />
                     </InputGroup>
-                    <Form.Text className="pb-3" muted>
-                        <FontAwesomeIcon icon={faInfoCircle} style={{color: "gray"}} className="d-inline mr-2"/> This is a help message.
-                    </Form.Text>
                 </Form.Group>
-                <Form.Group className="pt-4 pr-4 pl-4">
+                <Form.Group className="w-100 modal-row">
                     <Form.Label htmlFor="endDate" className="label-text">End of leave*</Form.Label>
                     <InputGroup className="mb-2 mr-sm-2" id="endDate">
                         <InputGroup.Prepend>
@@ -107,13 +135,30 @@ export const Dashboard: React.FC<Props> = () => {
                             required
                             type="date"
                             placeholder="Pick a date"
+                            id="endDate"
                             name="endDate"
+                            size="sm"
+                            onChange={changeEnd}
                         />
                     </InputGroup>
-                    <Form.Text className="pb-3" muted>
-                        <FontAwesomeIcon icon={faInfoCircle} style={{color: "gray"}} className="d-inline mr-2"/> This is a help message.
-                    </Form.Text>
                 </Form.Group>
+                <Form.Check 
+                    type="switch"
+                    id="firstDayHalf"
+                    name="firstDayHalf"
+                    label="Part of first leave day off"
+                    className="label-text pb-2 pt-2 pr-4 pl-4 mr-4 ml-4"
+                    onChange={changeFirstHalf}
+                />
+                <Form.Check 
+                    type="switch"
+                    id="lastDayHalf"
+                    name="lastDayHalf"
+                    label="Part of last leave day off"
+                    className="label-text pb-2 pt-2 pr-4 pl-4 mr-4 ml-4"
+                    onChange={changeLastHalf}
+                />
+                </Form.Row>
             </Modal.Body>
 
             <Message format="info" content="Only paid vacations will be deducted from your 28 annual leave days." />
