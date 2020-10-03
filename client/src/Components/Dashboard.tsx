@@ -39,20 +39,23 @@ export const Dashboard: React.FC<Props> = () => {
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
-            <Modal.Header closeButton>
-                <Modal.Title>Modal title</Modal.Title>
+            <Modal.Header closeButton className="modal-title">
+                <Modal.Title>Leaves</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-                I will not close if you click outside me. Don't even try to press
-                escape key.
+                <div className="text-center modal-body">
+                    Modal content
+                </div>
             </Modal.Body>
+
+            <Message format="info" content="Choose the type of leave that you wish to add." />
             
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
-                    Close
+                    Cancel
                 </Button>
-                <Button variant="primary">Understood</Button>
+                <Button variant="primary">Save leave</Button>
             </Modal.Footer>
         </Modal>
         </>
