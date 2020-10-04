@@ -122,25 +122,25 @@ export const Dashboard: React.FC<Props> = () => {
     }
 
     const [show, setShow] = useState(false);
-    const [formInput, updateFormInput] = useState({ type: 'Paid Vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
+    const [formInput, updateFormInput] = useState({ id: 0, type: 'Paid Vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
     const [errorState, handleError] = useState({ error: false, message: '' });
     const [submittedState, updateSubmitState] = useState(false);
 
     const handleClose = () => {
-        updateFormInput({ type: 'Paid vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
+        updateFormInput({ id: formInput.id, type: 'Paid vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
         handleError({ error: false, message: '' });
         setShow(false);
     }
 
     const handleShow = () => {
-        updateFormInput({ type: 'Paid vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
+        updateFormInput({ id: formInput.id, type: 'Paid vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
         updateSubmitState(false);
         setShow(true);
     }
 
     const changeType = (event: any) => {
         let leaveType = event.target.value;
-        updateFormInput({ type: leaveType, start: formInput.start, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: formInput.daysTaken });
+        updateFormInput({ id: formInput.id, type: leaveType, start: formInput.start, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: formInput.daysTaken });
     }
 
     const changeStart = (event: any) => {
@@ -158,13 +158,13 @@ export const Dashboard: React.FC<Props> = () => {
 
         if(endDate && ((endYear <= startYear && endMonth < startMonth) || (endMonth <= startMonth && endDay <= startDay))) {
             event.target.value = '';
-            updateFormInput({ type: formInput.type, start: '', end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: formInput.daysTaken });
+            updateFormInput({ id: formInput.id, type: formInput.type, start: '', end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: formInput.daysTaken });
             handleError({ error: true, message: 'You must choose an end date that is later than the start date.' });
         }
         else {
             handleError({ error: false, message: '' });
             let days = endDate ? remove_weekend(startDate, endDate) : formInput.daysTaken;
-            updateFormInput({ type: formInput.type, start: startDate, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
+            updateFormInput({ id: formInput.id, type: formInput.type, start: startDate, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
         }
     }
 
@@ -188,7 +188,7 @@ export const Dashboard: React.FC<Props> = () => {
         else {
             handleError({ error: false, message: '' });
             let days = startDate ? remove_weekend(startDate, endDate) : formInput.daysTaken;
-            updateFormInput({ type: formInput.type, start: formInput.start, end: endDate, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
+            updateFormInput({ id: formInput.id, type: formInput.type, start: formInput.start, end: endDate, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
         }
     }
 
@@ -205,7 +205,7 @@ export const Dashboard: React.FC<Props> = () => {
             days = (firstDay && lastDay) ? remove_weekend(firstDay, lastDay) : days;
         }
 
-        updateFormInput({ type: formInput.type, start: formInput.start, end: formInput.end, halfFirst: halfDay, halfLast: formInput.halfLast, daysTaken: days });
+        updateFormInput({ id: formInput.id, type: formInput.type, start: formInput.start, end: formInput.end, halfFirst: halfDay, halfLast: formInput.halfLast, daysTaken: days });
     }
 
     const changeLastHalf = (event: any) => {
@@ -221,13 +221,14 @@ export const Dashboard: React.FC<Props> = () => {
             days = (firstDay && lastDay) ? remove_weekend(firstDay, lastDay) : days;
         }
 
-        updateFormInput({ type: formInput.type, start: formInput.start, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: halfDay, daysTaken: days })
+        updateFormInput({ id: formInput.id, type: formInput.type, start: formInput.start, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: halfDay, daysTaken: days });
     }
 
     const formSubmission = (event: any) => {
         event.preventDefault();
         updateSubmitState(true);
         setShow(false); 
+        updateFormInput({ id: formInput.id+1, type: formInput.type, start: formInput.start, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: formInput.daysTaken });
     }
 
     return (
