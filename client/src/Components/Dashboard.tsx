@@ -215,7 +215,6 @@ export const Dashboard: React.FC<Props> = () => {
                 let errorMessage = "You cannot add a leave that exceeds " + annualDays + " days.";
                 handleError({ error: true, message: errorMessage }); 
             }
-            console.log(startDate)
             updateFormInput({ id: formInput.id, type: formInput.type, start: startDate, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
         }
     }
@@ -249,7 +248,6 @@ export const Dashboard: React.FC<Props> = () => {
                 let errorMessage = "You cannot add a leave that exceeds " + annualDays + " days.";
                 handleError({ error: true, message: errorMessage }); 
             }
-            console.log(formInput.start);
             updateFormInput({ id: formInput.id, type: formInput.type, start: formInput.start, end: endDate, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
         }
     }

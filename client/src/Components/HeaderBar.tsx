@@ -32,10 +32,10 @@ export const HeaderBar: React.FC<Props> = ({leaves, daysLeft}: Props) => {
             let startDateCut = startDate.slice(startDate.search("-")+1);
             let startMonth = startDateCut.slice(0, startDateCut.search("-"));
 
-            if((endMonth === 9 && startMonth === 9) && leaves[leaveKey].type === "Paid Vacation") {
+            if((parseInt(endMonth) === 10 && parseInt(startMonth) === 10) && leaves[leaveKey].type === "Paid Vacation") {
                 days += leaves[leaveKey].daysTaken;
             }
-            else if((startMonth < 9 && endMonth === 9) && leaves[leaveKey].type === "Paid Vacation") {
+            else if((parseInt(startMonth) < 10 && parseInt(endMonth) === 10) && leaves[leaveKey].type === "Paid Vacation") {
                 let end = leaves[leaveKey].end;
                 let year = end.slice(0, end.search("-"));
                 let dateCut = end.slice(end.search("-")+1);
@@ -57,7 +57,7 @@ export const HeaderBar: React.FC<Props> = ({leaves, daysLeft}: Props) => {
                     days += 1;
                 }
             }
-            else if((startMonth === 9 && endMonth > 9) && leaves[leaveKey].type === "Paid Vacation") {                    
+            else if((parseInt(startMonth) === 10 && parseInt(endMonth) > 10) && leaves[leaveKey].type === "Paid Vacation") {                    
                 let start = leaves[leaveKey].start;
                 let year = start.slice(0, start.search("-"));
                 let dateCut = start.slice(start.search("-")+1);
