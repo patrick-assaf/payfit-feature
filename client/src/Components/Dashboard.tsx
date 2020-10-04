@@ -16,6 +16,7 @@ interface Props {
 }
 
 let leaves: any = {};
+let annualDays = 28;
 
 export const Dashboard: React.FC<Props> = () => {
 
@@ -45,7 +46,7 @@ export const Dashboard: React.FC<Props> = () => {
 
     const displayDate = (date: any) => {
         let current_date = new Date(date);
-        let formatted_date = weekDays[current_date.getDay()] + " " + current_date.getDate() + " " + months[current_date.getMonth()] + " " + current_date.getFullYear()
+        let formatted_date = weekDays[current_date.getDay()] + " " + date.substring(date.length-2) + " " + months[current_date.getMonth()] + " " + current_date.getFullYear()
         return formatted_date;
     }
 
@@ -129,13 +130,13 @@ export const Dashboard: React.FC<Props> = () => {
     const [submittedState, updateSubmitState] = useState(false);
 
     const handleClose = () => {
-        updateFormInput({ id: formInput.id, type: 'Paid vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
+        updateFormInput({ id: formInput.id, type: 'Paid Vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
         handleError({ error: false, message: '' });
         setShow(false);
     }
 
     const handleShow = () => {
-        updateFormInput({ id: formInput.id, type: 'Paid vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
+        updateFormInput({ id: formInput.id, type: 'Paid Vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
         updateSubmitState(false);
         setShow(true);
     }
@@ -166,6 +167,11 @@ export const Dashboard: React.FC<Props> = () => {
         else {
             handleError({ error: false, message: '' });
             let days = endDate ? remove_weekend(startDate, endDate) : formInput.daysTaken;
+            if(days > annualDays) {
+                event.target.value = '';
+                let errorMessage = "You cannot add a leave that exceeds " + annualDays + " days.";
+                handleError({ error: true, message: errorMessage }); 
+            }
             updateFormInput({ id: formInput.id, type: formInput.type, start: startDate, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
         }
     }
@@ -190,6 +196,11 @@ export const Dashboard: React.FC<Props> = () => {
         else {
             handleError({ error: false, message: '' });
             let days = startDate ? remove_weekend(startDate, endDate) : formInput.daysTaken;
+            if(days > annualDays) {
+                event.target.value = '';
+                let errorMessage = "You cannot add a leave that exceeds " + annualDays + " days.";
+                handleError({ error: true, message: errorMessage }); 
+            }
             updateFormInput({ id: formInput.id, type: formInput.type, start: formInput.start, end: endDate, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
         }
     }
@@ -232,7 +243,7 @@ export const Dashboard: React.FC<Props> = () => {
         setShow(false);
         let index = formInput.id; 
         leaves[index] = formInput;
-        console.log(leaves);
+        annualDays = annualDays - formInput.daysTaken;
         updateFormInput({ id: formInput.id+1, type: formInput.type, start: formInput.start, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: formInput.daysTaken });
     }
 
@@ -242,7 +253,7 @@ export const Dashboard: React.FC<Props> = () => {
             <p className="feature-title">
                 October 2020 - Annual Leave
             </p>
-            <HeaderBar leaves={leaves} />
+            <HeaderBar daysLeft={annualDays} leaves={leaves} />
             <LeaveTable leaves={leaves} />
             <div className="d-flex">
                 <Button onClick={handleShow} variant="primary" className="ml-auto feature-button pt-2 pb-2 mb-3"><span className="pr-2">+</span> Add annual leave</Button>
@@ -250,8 +261,19 @@ export const Dashboard: React.FC<Props> = () => {
             <Message format="info" content="Your annual leave runs from 01/01/2020 to 31/12/2020." />
             { 
                 submittedState &&
-                <Message format="success" content="Your successfully added a new leave." />
+                <Message format="success" content={"You successfully added a new leave from " + displayDate(formInput.start) + " to " + displayDate(formInput.end) + "."} />
             }
+
+            {
+                (annualDays <= 5 && annualDays !== 0) &&
+                <Message format="warning" content={"You only have " + annualDays + " annual leave days left for this year."} />
+            }
+
+            {
+                annualDays === 0 &&
+                <Message format="warning" content={"You have used all of you annual leave days for this year."} />
+            }
+
         </div>
 
         <Modal
@@ -355,7 +377,7 @@ export const Dashboard: React.FC<Props> = () => {
                 </Form.Row>
             </Modal.Body>
 
-            <Message format="info" content="Only paid vacations will be deducted from your 28 annual leave days." />
+            <Message format="info" content="Only Paid Vacations will be deducted from your 28 annual leave days." />
 
             {
                 errorState.error &&
@@ -363,7 +385,17 @@ export const Dashboard: React.FC<Props> = () => {
             }
 
             {
-                !errorState.error && formInput.start && formInput.end &&
+                (formInput.halfFirst && formInput.start) &&
+                <Message format="info" content={"You are taking half of the first leave day off on " + displayDate(formInput.start) + "."}/>  
+            }
+
+            {
+                (formInput.halfLast && formInput.end) &&
+                <Message format="info" content={"You are taking half of the last leave day off on " + displayDate(formInput.end) + "."}/>  
+            }
+
+            {
+                (!errorState.error && formInput.start && formInput.end) &&
                 <Message format="info" content={"You are adding a leave for " + formInput.type + " starting on " + displayDate(formInput.start) + " and ending on " + displayDate(formInput.end) + " for a total of " + formInput.daysTaken + " leave days."} /> 
             }
 
