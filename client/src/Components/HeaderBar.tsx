@@ -2,10 +2,10 @@ import React from 'react';
 import '../Style.css';
 
 interface Props {
-    taken: number
+    leaves: any
 }
 
-export const HeaderBar: React.FC<Props> = ({taken}: Props) => {
+export const HeaderBar: React.FC<Props> = ({leaves}: Props) => {
     return (
         <div className="header-box row text-center shadow-sm">
             <div className="col-sm header-title">
@@ -14,11 +14,11 @@ export const HeaderBar: React.FC<Props> = ({taken}: Props) => {
             </div>
             <div className="col-sm header-title">
                 <div>Taken this month</div>
-                <div>{taken} days</div>
+                <div>0 days</div>
             </div>
             <div className="col-sm header-title">
                 <div><b>Remaining this year</b></div>
-                <div><span style={{color:"limegreen"}}> + </span><b>{28-taken} days</b></div>
+                <div><span style={{color:"limegreen"}}> + </span><b>28 days</b></div>
             </div>
         </div>
     );

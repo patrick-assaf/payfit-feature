@@ -2,10 +2,10 @@ import React from 'react';
 import '../Style.css';
 
 interface Props {
-
+    leaves: any
 }
 
-export const LeaveTable: React.FC<Props> = () => {
+export const LeaveTable: React.FC<Props> = ({leaves}: Props) => {
     return (
         <div className="table-box">
             <div className="row">

@@ -15,6 +15,8 @@ interface Props {
 
 }
 
+let leaves: any = {};
+
 export const Dashboard: React.FC<Props> = () => {
 
     const getTodaysDate = () => {
@@ -227,7 +229,10 @@ export const Dashboard: React.FC<Props> = () => {
     const formSubmission = (event: any) => {
         event.preventDefault();
         updateSubmitState(true);
-        setShow(false); 
+        setShow(false);
+        let index = formInput.id; 
+        leaves[index] = formInput;
+        console.log(leaves);
         updateFormInput({ id: formInput.id+1, type: formInput.type, start: formInput.start, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: formInput.daysTaken });
     }
 
@@ -237,8 +242,8 @@ export const Dashboard: React.FC<Props> = () => {
             <p className="feature-title">
                 October 2020 - Annual Leave
             </p>
-            <HeaderBar taken={0} />
-            <LeaveTable />
+            <HeaderBar leaves={leaves} />
+            <LeaveTable leaves={leaves} />
             <div className="d-flex">
                 <Button onClick={handleShow} variant="primary" className="ml-auto feature-button pt-2 pb-2 mb-3"><span className="pr-2">+</span> Add annual leave</Button>
             </div>
