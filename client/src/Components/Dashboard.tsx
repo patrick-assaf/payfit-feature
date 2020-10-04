@@ -179,11 +179,35 @@ export const Dashboard: React.FC<Props> = () => {
     }
 
     const changeFirstHalf = (event: any) => {
-        console.log(event.target.value);
+        let firstDay = formInput.start;
+        let lastDay = formInput.end;
+        let halfDay = !formInput.halfFirst;
+        let days = formInput.daysTaken;
+
+        if(halfDay && !is_weekend(firstDay)) {
+            days = days - 0.5;
+        }
+        else {
+            days = (firstDay && lastDay) ? remove_weekend(firstDay, lastDay) : days;
+        }
+
+        updateFormInput({ type: formInput.type, start: formInput.start, end: formInput.end, halfFirst: halfDay, halfLast: formInput.halfLast, daysTaken: days });
     }
 
     const changeLastHalf = (event: any) => {
-        console.log(event.target.value);
+        let firstDay = formInput.start;
+        let lastDay = formInput.end;
+        let halfDay = !formInput.halfLast;
+        let days = formInput.daysTaken;
+
+        if(halfDay && !is_weekend(lastDay)) {
+            days = days - 0.5;
+        }
+        else {
+            days = (firstDay && lastDay) ? remove_weekend(firstDay, lastDay) : days;
+        }
+
+        updateFormInput({ type: formInput.type, start: formInput.start, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: halfDay, daysTaken: days })
     }
 
     const formSubmission = () => {
