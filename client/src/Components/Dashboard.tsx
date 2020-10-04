@@ -232,7 +232,7 @@ export const Dashboard: React.FC<Props> = () => {
         let startMonth = startDateCut.slice(0, startDateCut.search("-"));
         let startDay = startDateCut.slice(startDateCut.search("-")+1);
 
-        if(checkOverlap(endDate)) {
+        if(checkOverlap(endDate) || checkOverlap(startDate)) {
             event.target.value = '';
             handleError({ error: true, message: 'You have already added a leave on this date.' }); 
         }
