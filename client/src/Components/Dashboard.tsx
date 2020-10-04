@@ -125,7 +125,8 @@ export const Dashboard: React.FC<Props> = () => {
     const handleShow = () => setShow(true);
 
     const changeType = (event: any) => {
-        console.log(event.target.value);
+        let leaveType = event.target.value;
+        updateFormInput({ type: leaveType, start: formInput.start, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: formInput.daysTaken });
     }
 
     const changeStart = (event: any) => {
