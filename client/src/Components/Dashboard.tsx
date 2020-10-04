@@ -115,6 +115,7 @@ export const Dashboard: React.FC<Props> = () => {
     const [show, setShow] = useState(false);
     const [formInput, updateFormInput] = useState({ type: 'Paid Vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
     const [errorState, handleError] = useState({ error: false, message: '' });
+    const [submittedState, updateSubmitState] = useState(false);
 
     const handleClose = () => {
         updateFormInput({ type: 'Paid vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
@@ -122,7 +123,10 @@ export const Dashboard: React.FC<Props> = () => {
         setShow(false);
     }
 
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        updateSubmitState(false);
+        setShow(true);
+    }
 
     const changeType = (event: any) => {
         let leaveType = event.target.value;
@@ -210,8 +214,10 @@ export const Dashboard: React.FC<Props> = () => {
         updateFormInput({ type: formInput.type, start: formInput.start, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: halfDay, daysTaken: days })
     }
 
-    const formSubmission = () => {
-        console.log("Form Submitted");
+    const formSubmission = (event: any) => {
+        event.preventDefault();
+        updateSubmitState(true);
+        setShow(false); 
     }
 
     return (
@@ -226,6 +232,10 @@ export const Dashboard: React.FC<Props> = () => {
                 <Button onClick={handleShow} variant="primary" className="ml-auto feature-button pt-2 pb-2 mb-3"><span className="pr-2">+</span> Add annual leave</Button>
             </div>
             <Message format="info" content="Your annual leave runs from 01/01/2020 to 31/12/2020." />
+            { 
+                submittedState &&
+                <Message format="success" content="Your successfully added a new leave." />
+            }
         </div>
 
         <Modal
