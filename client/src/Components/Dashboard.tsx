@@ -28,6 +28,90 @@ export const Dashboard: React.FC<Props> = () => {
 
     const today = getTodaysDate();
 
+    const is_weekend = (dateChecked: any) => {
+        let date = new Date(dateChecked);
+        if(date.getDay() === 5 || date.getDay() === 6) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    const remove_weekend = (start: any, end: any) => {
+        let endDate = end;
+        let endYear = endDate.slice(0, endDate.search("-"));
+        let endDateCut = endDate.slice(endDate.search("-")+1);
+        let endMonth = endDateCut.slice(0, endDateCut.search("-"));
+
+        let startDate = start;
+        let startYear = startDate.slice(0, startDate.search("-"));
+        let startDateCut = startDate.slice(startDate.search("-")+1);
+        let startMonth = startDateCut.slice(0, startDateCut.search("-"));
+        let startDay = startDateCut.slice(startDateCut.search("-")+1);
+
+        if(parseInt(startMonth) < parseInt(endMonth)) {
+            let daysInMonth = new Date(startYear, startMonth, 0).getDate();
+
+            let currentDate = startDate;
+            let daysCount = parseInt(startDay);
+
+            let days = 0;
+
+            startDay = parseInt(startDay);
+
+            while(daysCount <= daysInMonth) {
+                if(!is_weekend(currentDate)) {
+                    days += 1;
+                }
+                daysCount += 1;
+                startDay += 1;
+                let startDayPrint = startDay < 10 ? '0' + startDay : startDay;
+                currentDate = startYear + "-" + startMonth + "-" + startDayPrint;
+            }
+
+            currentDate = endYear + "-" + endMonth + "-01";
+            startDay = 1;
+
+            while(currentDate !== endDate) {
+                if(!is_weekend(currentDate)) {
+                    days += 1;
+                }
+                startDay += 1;
+                let startDayPrint = startDay < 10 ? '0' + startDay : startDay;
+                currentDate = endYear + "-" + endMonth + "-" + startDayPrint;
+            }
+    
+            if(!is_weekend(endDate)) {
+                days += 1;
+            }
+
+            return days;
+        }
+
+        else {
+            let currentDate = startDate;
+            let days = 0;
+
+            startDay = parseInt(startDay);
+
+            while(currentDate !== endDate) {
+                if(!is_weekend(currentDate)) {
+                    days += 1;
+                }
+                startDay += 1;
+                let startDayPrint = startDay < 10 ? '0' + startDay : startDay;
+                currentDate = startYear + "-" + startMonth + "-" + startDayPrint;
+            }
+
+            if(!is_weekend(endDate)) {
+                days += 1;
+            }
+
+            return days;
+        }
+    }
+
     const [show, setShow] = useState(false);
     const [formInput, updateFormInput] = useState({ type: 'Paid Vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
     const [errorState, handleError] = useState({ error: false, message: '' });
@@ -64,7 +148,7 @@ export const Dashboard: React.FC<Props> = () => {
         }
         else {
             handleError({ error: false, message: '' });
-            let days = parseInt(endDay) - parseInt(startDay);
+            let days = endDate ? remove_weekend(startDate, endDate) : formInput.daysTaken;
             updateFormInput({ type: formInput.type, start: startDate, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
         }
     }
@@ -88,7 +172,7 @@ export const Dashboard: React.FC<Props> = () => {
         }
         else {
             handleError({ error: false, message: '' });
-            let days = parseInt(endDay) - parseInt(startDay);
+            let days = startDate ? remove_weekend(startDate, endDate) : formInput.daysTaken;
             updateFormInput({ type: formInput.type, start: formInput.start, end: endDate, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
         }
     }
@@ -229,7 +313,7 @@ export const Dashboard: React.FC<Props> = () => {
 
             {
                 !errorState.error && formInput.start && formInput.end &&
-                <Message format="info" content={"You are adding a leave for " + formInput.type + " starting on " + formInput.start + " and ending on " + formInput.end + " for a total of " + formInput.daysTaken + " days."} /> 
+                <Message format="info" content={"You are adding a leave for " + formInput.type + " starting on " + formInput.start + " and ending on " + formInput.end + " for a total of " + formInput.daysTaken + " leave days."} /> 
             }
 
             <Modal.Footer>
