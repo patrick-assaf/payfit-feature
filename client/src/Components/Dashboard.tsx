@@ -38,6 +38,15 @@ export const Dashboard: React.FC<Props> = () => {
         }
     }
 
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    const displayDate = (date: any) => {
+        let current_date = new Date(date);
+        let formatted_date = weekDays[current_date.getDay()] + " " + current_date.getDate() + " " + months[current_date.getMonth()] + " " + current_date.getFullYear()
+        return formatted_date;
+    }
+
     const remove_weekend = (start: any, end: any) => {
         let endDate = end;
         let endYear = endDate.slice(0, endDate.search("-"));
@@ -124,6 +133,7 @@ export const Dashboard: React.FC<Props> = () => {
     }
 
     const handleShow = () => {
+        updateFormInput({ type: 'Paid vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
         updateSubmitState(false);
         setShow(true);
     }
@@ -348,7 +358,7 @@ export const Dashboard: React.FC<Props> = () => {
 
             {
                 !errorState.error && formInput.start && formInput.end &&
-                <Message format="info" content={"You are adding a leave for " + formInput.type + " starting on " + formInput.start + " and ending on " + formInput.end + " for a total of " + formInput.daysTaken + " leave days."} /> 
+                <Message format="info" content={"You are adding a leave for " + formInput.type + " starting on " + displayDate(formInput.start) + " and ending on " + displayDate(formInput.end) + " for a total of " + formInput.daysTaken + " leave days."} /> 
             }
 
             <Modal.Footer>
