@@ -243,7 +243,9 @@ export const Dashboard: React.FC<Props> = () => {
         setShow(false);
         let index = formInput.id; 
         leaves[index] = formInput;
-        annualDays = annualDays - formInput.daysTaken;
+        if(formInput.type === "Paid Vacation") {
+            annualDays = annualDays - formInput.daysTaken;
+        }
         updateFormInput({ id: formInput.id+1, type: formInput.type, start: formInput.start, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: formInput.daysTaken });
     }
 
