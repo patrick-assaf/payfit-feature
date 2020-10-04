@@ -41,12 +41,10 @@ export const Dashboard: React.FC<Props> = () => {
         }
     }
 
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const weekDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
     const displayDate = (date: any) => {
         let current_date = new Date(date);
-        let formatted_date = weekDays[current_date.getDay()] + " " + date.substring(date.length-2) + " " + months[current_date.getMonth()] + " " + current_date.getFullYear()
+        let current_month = current_date.getMonth()+1 < 10 ? "0" + (current_date.getMonth()+1) : (current_date.getMonth()+1);
+        let formatted_date = current_month + "-" + date.substring(date.length-2) + "-" + current_date.getFullYear();
         return formatted_date;
     }
 
@@ -159,7 +157,7 @@ export const Dashboard: React.FC<Props> = () => {
         let endMonth = endDateCut.slice(0, endDateCut.search("-"));
         let endDay = endDateCut.slice(endDateCut.search("-")+1);
 
-        if(endDate && ((endYear <= startYear && endMonth < startMonth) || (endMonth <= startMonth && endDay <= startDay))) {
+        if(endDate && ((endYear <= startYear && endMonth < startMonth) || (endMonth <= startMonth && endDay < startDay))) {
             event.target.value = '';
             updateFormInput({ id: formInput.id, type: formInput.type, start: '', end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: formInput.daysTaken });
             handleError({ error: true, message: 'You must choose an end date that is later than the start date.' });
@@ -189,7 +187,7 @@ export const Dashboard: React.FC<Props> = () => {
         let startMonth = startDateCut.slice(0, startDateCut.search("-"));
         let startDay = startDateCut.slice(startDateCut.search("-")+1);
 
-        if((endYear <= startYear && endMonth < startMonth) || (endMonth <= startMonth && endDay <= startDay)) {
+        if((endYear <= startYear && endMonth < startMonth) || (endMonth <= startMonth && endDay < startDay)) {
             event.target.value = '';
             handleError({ error: true, message: 'You must choose an end date that is later than the start date.' });
         }
