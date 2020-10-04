@@ -24,10 +24,14 @@ export const HeaderBar: React.FC<Props> = ({leaves, daysLeft}: Props) => {
         let days = daysThisMonth;
         // eslint-disable-next-line
         Object.keys(leaves).map(function(leaveKey: any) {
-            let endDate = new Date(leaves[leaveKey].end);
-            let startDate = new Date(leaves[leaveKey].start);
-            let endMonth = endDate.getMonth();
-            let startMonth = startDate.getMonth();
+            let endDate = leaves[leaveKey].end;
+            let endDateCut = endDate.slice(endDate.search("-")+1);
+            let endMonth = endDateCut.slice(0, endDateCut.search("-"));
+
+            let startDate = leaves[leaveKey].start;
+            let startDateCut = startDate.slice(startDate.search("-")+1);
+            let startMonth = startDateCut.slice(0, startDateCut.search("-"));
+
             if((endMonth === 9 && startMonth === 9) && leaves[leaveKey].type === "Paid Vacation") {
                 days += leaves[leaveKey].daysTaken;
             }

@@ -42,9 +42,11 @@ export const Dashboard: React.FC<Props> = () => {
     }
 
     const displayDate = (date: any) => {
-        let current_date = new Date(date);
-        let current_month = current_date.getMonth()+1 < 10 ? "0" + (current_date.getMonth()+1) : (current_date.getMonth()+1);
-        let formatted_date = current_month + "-" + date.substring(date.length-2) + "-" + current_date.getFullYear();
+        let year = date.slice(0, date.search("-"));
+        let dateCut = date.slice(date.search("-")+1);
+        let month = dateCut.slice(0, dateCut.search("-"));
+        let day = dateCut.slice(dateCut.search("-")+1);
+        let formatted_date =  month + "-" + day + "-" + year;
         return formatted_date;
     }
 
@@ -122,6 +124,45 @@ export const Dashboard: React.FC<Props> = () => {
         }
     }
 
+    const checkOverlap = (date: any) => {
+        let dateCut = date.slice(date.search("-")+1);
+        let month = dateCut.slice(0, dateCut.search("-"));
+        let day = dateCut.slice(dateCut.search("-")+1);
+
+        let result = false;
+
+        // eslint-disable-next-line
+        Object.keys(leaves).map(function(leaveKey: any) {
+            let endDate = leaves[leaveKey].end;
+            let endDateCut = endDate.slice(endDate.search("-")+1);
+            let endMonth = endDateCut.slice(0, endDateCut.search("-"));
+            let endDay = endDateCut.slice(endDateCut.search("-")+1);
+
+            let startDate = leaves[leaveKey].start;
+            let startDateCut = startDate.slice(startDate.search("-")+1);
+            let startMonth = startDateCut.slice(0, startDateCut.search("-"));
+            let startDay = startDateCut.slice(startDateCut.search("-")+1);
+            
+            if(month === startMonth && month === endMonth) {
+                if(parseInt(day) <= parseInt(endDay) && parseInt(day) >= parseInt(startDay)) {
+                    result = true;
+                }
+            }
+            if(month > startMonth && month === endMonth) {
+                if(parseInt(day) <= parseInt(endDay)) {
+                    result = true;
+                }
+            }
+            if(month < endMonth && month === startMonth) {
+                if(parseInt(day) >= parseInt(startDay)) {
+                    result = true;
+                } 
+            }
+        });
+
+        return result;
+    }
+
     const [show, setShow] = useState(false);
     const [formInput, updateFormInput] = useState({ id: 0, type: 'Paid Vacation', start: today, end: '', halfFirst: false, halfLast: false, daysTaken: 0 });
     const [errorState, handleError] = useState({ error: false, message: '' });
@@ -157,7 +198,11 @@ export const Dashboard: React.FC<Props> = () => {
         let endMonth = endDateCut.slice(0, endDateCut.search("-"));
         let endDay = endDateCut.slice(endDateCut.search("-")+1);
 
-        if(endDate && ((endYear <= startYear && endMonth < startMonth) || (endMonth <= startMonth && endDay < startDay))) {
+        if(checkOverlap(startDate)) {
+            event.target.value = '';
+            handleError({ error: true, message: 'You have already added a leave on this date.' }); 
+        }
+        else if(endDate && ((endYear <= startYear && endMonth < startMonth) || (endMonth <= startMonth && endDay < startDay))) {
             event.target.value = '';
             updateFormInput({ id: formInput.id, type: formInput.type, start: '', end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: formInput.daysTaken });
             handleError({ error: true, message: 'You must choose an end date that is later than the start date.' });
@@ -170,6 +215,7 @@ export const Dashboard: React.FC<Props> = () => {
                 let errorMessage = "You cannot add a leave that exceeds " + annualDays + " days.";
                 handleError({ error: true, message: errorMessage }); 
             }
+            console.log(startDate)
             updateFormInput({ id: formInput.id, type: formInput.type, start: startDate, end: formInput.end, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
         }
     }
@@ -187,7 +233,11 @@ export const Dashboard: React.FC<Props> = () => {
         let startMonth = startDateCut.slice(0, startDateCut.search("-"));
         let startDay = startDateCut.slice(startDateCut.search("-")+1);
 
-        if((endYear <= startYear && endMonth < startMonth) || (endMonth <= startMonth && endDay < startDay)) {
+        if(checkOverlap(endDate)) {
+            event.target.value = '';
+            handleError({ error: true, message: 'You have already added a leave on this date.' }); 
+        }
+        else if((endYear <= startYear && endMonth < startMonth) || (endMonth <= startMonth && endDay < startDay)) {
             event.target.value = '';
             handleError({ error: true, message: 'You must choose an end date that is later than the start date.' });
         }
@@ -199,6 +249,7 @@ export const Dashboard: React.FC<Props> = () => {
                 let errorMessage = "You cannot add a leave that exceeds " + annualDays + " days.";
                 handleError({ error: true, message: errorMessage }); 
             }
+            console.log(formInput.start);
             updateFormInput({ id: formInput.id, type: formInput.type, start: formInput.start, end: endDate, halfFirst: formInput.halfFirst, halfLast: formInput.halfLast, daysTaken: days });
         }
     }
