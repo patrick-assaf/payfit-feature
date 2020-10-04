@@ -34,7 +34,7 @@ export const LeaveTable: React.FC<Props> = ({leaves}: Props) => {
     const displayDate = (date: any) => {
         let current_date = new Date(date);
         let current_month = current_date.getMonth()+1 < 10 ? "0" + (current_date.getMonth()+1) : (current_date.getMonth()+1);
-        let formatted_date = date.substring(date.length-2) + "-" + current_month + "-" + current_date.getFullYear();
+        let formatted_date = current_month + "-" + date.substring(date.length-2) + "-" + current_date.getFullYear();
         return formatted_date;
     }
 
