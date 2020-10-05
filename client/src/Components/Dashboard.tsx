@@ -46,7 +46,7 @@ export const Dashboard: React.FC<Props> = () => {
         let dateCut = date.slice(date.search("-")+1);
         let month = dateCut.slice(0, dateCut.search("-"));
         let day = dateCut.slice(dateCut.search("-")+1);
-        let formatted_date =  month + "-" + day + "-" + year;
+        let formatted_date =  day + "/" + month + "/" + year;
         return formatted_date;
     }
 
